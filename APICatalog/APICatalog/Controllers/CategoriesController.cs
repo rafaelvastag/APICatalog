@@ -21,6 +21,12 @@ namespace APICatalog.Controllers
             _context = context;
         }
 
+        [HttpGet("products")]
+        public ActionResult<IEnumerable<Category>> GetWithProduct()
+        {
+            return _context.Categories.AsNoTracking().Include(c => c.Products).ToList();
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<Category>> Get()
         {

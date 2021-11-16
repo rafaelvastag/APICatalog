@@ -31,3 +31,7 @@ C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalo
 C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
 C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\bin\Debug\net5.0\Humanizer.dll
 C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\obj\Debug\net5.0\APICatalog.csproj.AssemblyReference.cache
+C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\bin\Debug\net5.0\Newtonsoft.Json.dll
+C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
