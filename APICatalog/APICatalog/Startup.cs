@@ -1,6 +1,8 @@
+using APICatalog.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +26,10 @@ namespace APICatalog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<CatalogDbContext>(options => {
+                string con = Configuration.GetConnectionString("APICatalogConnection");
+                options.UseMySql(con, ServerVersion.AutoDetect(con));
+            });
 
             services.AddControllers();
         }
