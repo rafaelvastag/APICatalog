@@ -23,7 +23,7 @@ namespace APICatalog.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Product>> Get()
         {
-           return _context.Products.AsNoTracking().ToList();
+            return _context.Products.AsNoTracking().ToList();
         }
 
         [HttpGet("{id}", Name = "GetProduct")]
@@ -48,6 +48,40 @@ namespace APICatalog.Controllers
             return new CreatedAtRouteResult("GetProduct", new { id = p.ProductId }, p);
         }
 
+        [HttpPut("{id}")]
+        public ActionResult Put(int id, [FromBody] Product p)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != p.ProductId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(p).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult<Product> Delete(int id)
+        {
+            var p = _context.Products.FirstOrDefault(p => p.ProductId == id);
+
+            if (null == p)
+            {
+                return NotFound();
+            }
+
+            _context.Products.Remove(p);
+            _context.SaveChanges();
+
+            return p;
         }
     }
+}
 
