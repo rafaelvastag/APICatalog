@@ -1,5 +1,6 @@
 ﻿using APICatalog.Context;
 using APICatalog.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -30,56 +31,97 @@ namespace APICatalog.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Category>> Get()
         {
-            return _context.Categories.AsNoTracking().ToList();
+            try
+            {
+                return _context.Categories.AsNoTracking().ToList();
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error while trying get the categories");
+            }
         }
 
         [HttpGet("{id}", Name = "GetCategory")]
         public ActionResult<Category> get(int id)
         {
-            Category c = _context.Categories.AsNoTracking().FirstOrDefault();
+            try
+            {
+                Category c = _context.Categories.AsNoTracking().Include(c => c.Products).FirstOrDefault(c => id == c.CategoryId);
 
-            return null == c ? NotFound() : c;
+                return null == c ? NotFound($"The category with id = {id} was not found") : c;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                      $"Error while trying get the category with id: {id}");
+            }
+
         }
 
 
         [HttpPost]
         public ActionResult Post([FromBody] Category c)
         {
-            _context.Categories.Add(c);
-            _context.SaveChanges();
+            try
+            {
+                _context.Categories.Add(c);
+                _context.SaveChanges();
 
-            return CreatedAtRoute("GetCategory", new { id = c.CategoryId }, c);
+                return CreatedAtRoute("GetCategory", new { id = c.CategoryId }, c);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error while trying create a new category");
+            }
         }
 
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Category c)
         {
-            if (id != c.CategoryId)
+            try
             {
-                return BadRequest();
+                if (id != c.CategoryId)
+                {
+                    return BadRequest($"Ids mismatch {id} <> {c.CategoryId}");
+                }
+
+                _context.Entry(c).State = EntityState.Modified;
+                _context.SaveChanges();
+
+                return Ok();
             }
-
-            _context.Entry(c).State = EntityState.Modified;
-            _context.SaveChanges();
-
-            return Ok();
-
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                      $"Error while trying update the category with id: {id}");
+            }
         }
 
         [HttpDelete("{id}")]
         public ActionResult<Category> Delete(int id)
         {
-            Category c = _context.Categories.AsNoTracking().FirstOrDefault(c => id == c.CategoryId);
 
-            if (null == c)
+            try
             {
-                return NotFound();
+                Category c = _context.Categories.AsNoTracking().FirstOrDefault(c => id == c.CategoryId);
+
+                if (null == c)
+                {
+                    NotFound($"The category with id = {id} was not found");
+                }
+
+                _context.Categories.Remove(c);
+                _context.SaveChanges();
+
+                return c;
             }
-
-            _context.Categories.Remove(c);
-            _context.SaveChanges();
-
-            return c;
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                      $"Error while trying delete the category with id: {id}");
+            }
         }
 
     }

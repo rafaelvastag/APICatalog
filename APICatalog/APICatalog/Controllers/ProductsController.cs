@@ -34,6 +34,23 @@ namespace APICatalog.Controllers
             return null == p ? NotFound() : p;
         }
 
+
+        //Method for Router examples.
+        // Not Ignore Controller prefix route. http:....api/[Controller]/id/param2
+        [HttpGet("{id}/{param2}", Name = "GetProduct2")]
+        // Ignore Controller prefix route. http:..../id/param2
+        [HttpGet("/noController/{id}/{param2}", Name = "GetProduct3")]
+        // Param2 is optional
+        [HttpGet("{id}/{param2?}", Name = "GetProduct4")]
+        // Param2 has a Default value
+        [HttpGet("{id}/{param2 = Mac}", Name = "GetProduct5")]
+        public ActionResult<Product> GetRouteExample_NOT_USED(int id, string param2)
+        {
+            var p = _context.Products.AsNoTracking().FirstOrDefault(p => p.ProductId == id);
+
+            return null == p ? NotFound() : p;
+        }
+
         [HttpPost]
         public ActionResult Post([FromBody] Product p)
         {
