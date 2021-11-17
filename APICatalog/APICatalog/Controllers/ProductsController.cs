@@ -21,21 +21,22 @@ namespace APICatalog.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Product>> Get()
+        public async Task<ActionResult<IEnumerable<Product>>> Get()
         {
-            return _context.Products.AsNoTracking().ToList();
+            // waiting this operation but not blocking the thread
+            return await _context.Products.AsNoTracking().ToListAsync();
         }
 
-        [HttpGet("{id}", Name = "GetProduct")]
-        public ActionResult<Product> Get(int id)
+        [HttpGet("{id:int:min(1)}", Name = "GetProduct")]
+        public async Task<ActionResult<Product>> Get(int id)
         {
-            var p = _context.Products.AsNoTracking().FirstOrDefault(p => p.ProductId == id);
+            var p = await _context.Products.AsNoTracking().FirstOrDefaultAsync(p => p.ProductId == id);
 
             return null == p ? NotFound() : p;
         }
 
 
-        //Method for Router examples.
+        // Method for Router examples.
         // Not Ignore Controller prefix route. http:....api/[Controller]/id/param2
         [HttpGet("{id}/{param2}", Name = "GetProduct2")]
         // Ignore Controller prefix route. http:..../id/param2
@@ -44,6 +45,10 @@ namespace APICatalog.Controllers
         [HttpGet("{id}/{param2?}", Name = "GetProduct4")]
         // Param2 has a Default value
         [HttpGet("{id}/{param2 = Mac}", Name = "GetProduct5")]
+        // Restricted alphanumeric param2
+        [HttpGet("{id}/{param2:alpha}", Name = "GetProduct6")]
+        // Restricted alphanumeric with length 5 - param2
+        [HttpGet("{id}/{param2:alpha:length(5)}", Name = "GetProduct7")]
         public ActionResult<Product> GetRouteExample_NOT_USED(int id, string param2)
         {
             var p = _context.Products.AsNoTracking().FirstOrDefault(p => p.ProductId == id);
