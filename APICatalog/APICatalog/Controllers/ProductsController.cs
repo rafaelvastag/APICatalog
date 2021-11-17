@@ -1,6 +1,7 @@
 ﻿using APICatalog.Context;
 using APICatalog.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace APICatalog.Controllers
         }
 
         [HttpGet("{id:int:min(1)}", Name = "GetProduct")]
-        public async Task<ActionResult<Product>> Get(int id)
+        public async Task<ActionResult<Product>> Get(int id, [BindRequired] string name)
         {
             var p = await _context.Products.AsNoTracking().FirstOrDefaultAsync(p => p.ProductId == id);
 

@@ -1,4 +1,6 @@
 using APICatalog.Context;
+using APICatalog.Services;
+using APICatalog.Services.Impl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +32,8 @@ namespace APICatalog
                 string con = Configuration.GetConnectionString("APICatalogConnection");
                 options.UseMySql(con, ServerVersion.AutoDetect(con));
             });
+
+            services.AddTransient<IFromService, FromService>();
 
             services.AddControllers();
             services.AddControllers().AddNewtonsoftJson(options =>

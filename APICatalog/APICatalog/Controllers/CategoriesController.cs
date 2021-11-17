@@ -1,8 +1,10 @@
 ﻿using APICatalog.Context;
 using APICatalog.Entities;
+using APICatalog.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +18,18 @@ namespace APICatalog.Controllers
     {
 
         private readonly CatalogDbContext _context;
+        private readonly IConfiguration _config;
 
-        public CategoriesController(CatalogDbContext context)
+        public CategoriesController(CatalogDbContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
+        }
+
+        [HttpGet("welcome/{msg:alpha}")]
+        public ActionResult<string> GetWelcome([FromServices] IFromService _service, string msg)
+        {
+            return _service.Default(msg);
         }
 
         [HttpGet("products")]
