@@ -1,4 +1,5 @@
-﻿using System;
+﻿using APICatalog.Validations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,6 +17,7 @@ namespace APICatalog.Entities
 
         [Required(ErrorMessage = "Product Name is required")]
         [MaxLength(80)]
+        [StartWithUpperCaseAttribute]
         [Column("NAME")]
         public string Name { get; set; }
 
