@@ -1,4 +1,6 @@
 using APICatalog.Context;
+using APICatalog.Extensions;
+using APICatalog.Filters;
 using APICatalog.Services;
 using APICatalog.Services.Impl;
 using Microsoft.AspNetCore.Builder;
@@ -33,6 +35,8 @@ namespace APICatalog
                 options.UseMySql(con, ServerVersion.AutoDetect(con));
             });
 
+            services.AddScoped<ApiLoggingFilter>();
+
             services.AddTransient<IFromService, FromService>();
 
             services.AddControllers();
@@ -49,6 +53,8 @@ namespace APICatalog
             {
                 app.UseDeveloperExceptionPage();
             }
+            // enabling middlewares use 
+            app.ConfigureExceptionHandler();
 
             app.UseRouting();
 

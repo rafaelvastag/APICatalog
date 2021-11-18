@@ -1,5 +1,6 @@
 ﻿using APICatalog.Context;
 using APICatalog.Entities;
+using APICatalog.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace APICatalog.Controllers
         }
 
         [HttpGet]
+        [ServiceFilter(typeof(ApiLoggingFilter))]
         public async Task<ActionResult<IEnumerable<Product>>> Get()
         {
             // waiting this operation but not blocking the thread
