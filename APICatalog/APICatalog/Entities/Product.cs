@@ -14,17 +14,18 @@ namespace APICatalog.Entities
         [Column("ID")]
         public int ProductId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Product Name is required")]
         [MaxLength(80)]
         [Column("NAME")]
         public string Name { get; set; }
 
         [Required]
-        [MaxLength(500)]
+        [StringLength(10, ErrorMessage = "The description must not have more than {1} characters")]
         [Column("DESCRIPTION")]
         public string Description { get; set; }
 
         [Required]
+        [Range(1,10000, ErrorMessage = "The price must be between {1} and {2}")]
         [Column("PRICE")]
         public decimal Price { get; set; }
 
