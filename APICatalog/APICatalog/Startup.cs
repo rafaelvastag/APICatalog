@@ -1,6 +1,7 @@
 using APICatalog.Context;
 using APICatalog.Extensions;
 using APICatalog.Filters;
+using APICatalog.Logging;
 using APICatalog.Services;
 using APICatalog.Services.Impl;
 using Microsoft.AspNetCore.Builder;
@@ -47,12 +48,18 @@ namespace APICatalog
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            loggerFactory.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
+            {
+                LogLevel = LogLevel.Information
+            }));
+
             // enabling middlewares use 
             app.ConfigureExceptionHandler();
 

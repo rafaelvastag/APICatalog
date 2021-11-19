@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,13 @@ namespace APICatalog.Controllers
 
         private readonly CatalogDbContext _context;
         private readonly IConfiguration _config;
+        private readonly ILogger _logger;
 
-        public CategoriesController(CatalogDbContext context, IConfiguration config)
+        public CategoriesController(CatalogDbContext context, IConfiguration config, ILogger<CategoriesController> logger)
         {
             _context = context;
             _config = config;
+            _logger = logger;
         }
 
         [HttpGet("welcome/{msg:alpha}")]
@@ -35,6 +38,7 @@ namespace APICatalog.Controllers
         [HttpGet("products")]
         public ActionResult<IEnumerable<Category>> GetWithProduct()
         {
+            _logger.LogInformation(" == Getting all categories with you products ==");
             return _context.Categories.AsNoTracking().Include(c => c.Products).ToList();
         }
 
