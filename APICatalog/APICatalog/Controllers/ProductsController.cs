@@ -1,6 +1,8 @@
-﻿using APICatalog.Entities;
+﻿using APICatalog.DTOs;
+using APICatalog.Entities;
 using APICatalog.Filters;
 using APICatalog.Repositories.UnitOfWork;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
@@ -13,32 +15,40 @@ namespace APICatalog.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IUnitOfWork _uof;
+        private readonly IMapper _mapper;
 
-        public ProductsController(IUnitOfWork uof)
+        public ProductsController(IUnitOfWork uof, IMapper mapper)
         {
             _uof = uof;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [ServiceFilter(typeof(ApiLoggingFilter))]
-        public ActionResult<IEnumerable<Product>> Get()
+        public ActionResult<IEnumerable<ProductDTO>> Get()
         {
             // waiting this operation but not blocking the thread
-            return _uof.ProductRepository.Get().ToList();
+            var products = _uof.ProductRepository.Get().ToList();
+            var productsDTO = _mapper.Map<List<ProductDTO>>(products);
+
+            return productsDTO;
         }
 
         [HttpGet("by-price")]
-        public ActionResult<IEnumerable<Product>> GetOrderByPrice()
+        public ActionResult<IEnumerable<ProductDTO>> GetOrderByPrice()
         {
-            return _uof.ProductRepository.GetByPrice().ToList();
+            var products = _uof.ProductRepository.GetByPrice().ToList();
+            var productsDTO = _mapper.Map<List<ProductDTO>>(products);
+
+            return productsDTO;
         }
 
         [HttpGet("{id:int:min(1)}", Name = "GetProduct")]
-        public ActionResult<Product> Get(int id, [BindRequired] string name)
+        public ActionResult<ProductDTO> Get(int id)
         {
             var p = _uof.ProductRepository.GetById(p => p.ProductId == id);
 
-            return null == p ? NotFound() : p;
+            return null == p ? NotFound() : _mapper.Map<ProductDTO>(p);
         }
 
 
@@ -55,25 +65,27 @@ namespace APICatalog.Controllers
         [HttpGet("{id}/{param2:alpha}", Name = "GetProduct6")]
         // Restricted alphanumeric with length 5 - param2
         [HttpGet("{id}/{param2:alpha:length(5)}", Name = "GetProduct7")]
-        public ActionResult<Product> GetRouteExample_NOT_USED(int id, string param2)
+        public ActionResult<ProductDTO> GetRouteExample_NOT_USED(int id, string param2)
         {
             var p = _uof.ProductRepository.GetById(p => p.ProductId == id);
 
-            return null == p ? NotFound() : p;
+            return null == p ? NotFound() : _mapper.Map<ProductDTO>(p);
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] Product p)
+        public ActionResult Post([FromBody] ProductDTO p)
         {
-
-            _uof.ProductRepository.Add(p);
+            var product = _mapper.Map<Product>(p);
+            _uof.ProductRepository.Add(product);
             _uof.Commit();
 
-            return new CreatedAtRouteResult("GetProduct", new { id = p.ProductId }, p);
+            var pSavedDTO = _mapper.Map<ProductDTO>(product);
+
+            return new CreatedAtRouteResult("GetProduct", new { id = pSavedDTO.ProductId }, pSavedDTO);
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] Product p)
+        public ActionResult Put(int id, [FromBody] ProductDTO p)
         {
 
             if (id != p.ProductId)
@@ -81,14 +93,16 @@ namespace APICatalog.Controllers
                 return BadRequest();
             }
 
-            _uof.ProductRepository.Update(p);
+            var product = _mapper.Map<Product>(p);
+
+            _uof.ProductRepository.Update(product);
             _uof.Commit();
 
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<Product> Delete(int id)
+        public ActionResult<ProductDTO> Delete(int id)
         {
             var p = _uof.ProductRepository.GetById(p => p.ProductId == id);
 
@@ -100,7 +114,7 @@ namespace APICatalog.Controllers
             _uof.ProductRepository.Delete(p);
             _uof.Commit();
 
-            return p;
+            return _mapper.Map<ProductDTO>(p);
         }
     }
 }
