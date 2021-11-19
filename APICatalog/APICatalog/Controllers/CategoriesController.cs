@@ -1,5 +1,6 @@
 ﻿using APICatalog.Context;
 using APICatalog.Entities;
+using APICatalog.Repositories.UnitOfWork;
 using APICatalog.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +19,13 @@ namespace APICatalog.Controllers
     public class CategoriesController : ControllerBase
     {
 
-        private readonly CatalogDbContext _context;
+        private readonly IUnitOfWork _uof;
         private readonly IConfiguration _config;
         private readonly ILogger _logger;
 
-        public CategoriesController(CatalogDbContext context, IConfiguration config, ILogger<CategoriesController> logger)
+        public CategoriesController(IUnitOfWork uof, IConfiguration config, ILogger<CategoriesController> logger)
         {
-            _context = context;
+            _uof = uof;
             _config = config;
             _logger = logger;
         }
@@ -39,7 +40,7 @@ namespace APICatalog.Controllers
         public ActionResult<IEnumerable<Category>> GetWithProduct()
         {
             _logger.LogInformation(" == Getting all categories with you products ==");
-            return _context.Categories.AsNoTracking().Include(c => c.Products).ToList();
+            return _uof.CategoryRepository.GetCategoryWithProducts().ToList();
         }
 
         [HttpGet]
@@ -47,7 +48,7 @@ namespace APICatalog.Controllers
         {
             try
             {
-                return _context.Categories.AsNoTracking().ToList();
+                return _uof.CategoryRepository.Get().ToList();
             }
             catch (Exception)
             {
@@ -61,7 +62,7 @@ namespace APICatalog.Controllers
         {
             try
             {
-                Category c = _context.Categories.AsNoTracking().Include(c => c.Products).FirstOrDefault(c => id == c.CategoryId);
+                Category c = _uof.CategoryRepository.GetById(c => id == c.CategoryId);
 
                 return null == c ? NotFound($"The category with id = {id} was not found") : c;
             }
@@ -79,8 +80,8 @@ namespace APICatalog.Controllers
         {
             try
             {
-                _context.Categories.Add(c);
-                _context.SaveChanges();
+                _uof.CategoryRepository.Add(c);
+                _uof.Commit();
 
                 return CreatedAtRoute("GetCategory", new { id = c.CategoryId }, c);
             }
@@ -101,8 +102,8 @@ namespace APICatalog.Controllers
                     return BadRequest($"Ids mismatch {id} <> {c.CategoryId}");
                 }
 
-                _context.Entry(c).State = EntityState.Modified;
-                _context.SaveChanges();
+                _uof.CategoryRepository.Update(c);
+                _uof.Commit();
 
                 return Ok();
             }
@@ -119,15 +120,15 @@ namespace APICatalog.Controllers
 
             try
             {
-                Category c = _context.Categories.AsNoTracking().FirstOrDefault(c => id == c.CategoryId);
+                Category c = _uof.CategoryRepository.GetById(c => id == c.CategoryId);
 
                 if (null == c)
                 {
                     NotFound($"The category with id = {id} was not found");
                 }
 
-                _context.Categories.Remove(c);
-                _context.SaveChanges();
+                _uof.CategoryRepository.Delete(c);
+                _uof.Commit();
 
                 return c;
             }

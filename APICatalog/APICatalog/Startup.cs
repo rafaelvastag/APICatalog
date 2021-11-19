@@ -2,20 +2,16 @@ using APICatalog.Context;
 using APICatalog.Extensions;
 using APICatalog.Filters;
 using APICatalog.Logging;
+using APICatalog.Repositories.UnitOfWork;
 using APICatalog.Services;
 using APICatalog.Services.Impl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace APICatalog
 {
@@ -31,6 +27,9 @@ namespace APICatalog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddDbContext<CatalogDbContext>(options => {
                 string con = Configuration.GetConnectionString("APICatalogConnection");
                 options.UseMySql(con, ServerVersion.AutoDetect(con));

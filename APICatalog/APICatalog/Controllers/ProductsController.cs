@@ -1,13 +1,10 @@
-﻿using APICatalog.Context;
-using APICatalog.Entities;
+﻿using APICatalog.Entities;
 using APICatalog.Filters;
+using APICatalog.Repositories.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace APICatalog.Controllers
 {
@@ -15,25 +12,31 @@ namespace APICatalog.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly CatalogDbContext _context;
+        private readonly IUnitOfWork _uof;
 
-        public ProductsController(CatalogDbContext context)
+        public ProductsController(IUnitOfWork uof)
         {
-            _context = context;
+            _uof = uof;
         }
 
         [HttpGet]
         [ServiceFilter(typeof(ApiLoggingFilter))]
-        public async Task<ActionResult<IEnumerable<Product>>> Get()
+        public ActionResult<IEnumerable<Product>> Get()
         {
             // waiting this operation but not blocking the thread
-            return await _context.Products.AsNoTracking().ToListAsync();
+            return _uof.ProductRepository.Get().ToList();
+        }
+
+        [HttpGet("by-price")]
+        public ActionResult<IEnumerable<Product>> GetOrderByPrice()
+        {
+            return _uof.ProductRepository.GetByPrice().ToList();
         }
 
         [HttpGet("{id:int:min(1)}", Name = "GetProduct")]
-        public async Task<ActionResult<Product>> Get(int id, [BindRequired] string name)
+        public ActionResult<Product> Get(int id, [BindRequired] string name)
         {
-            var p = await _context.Products.AsNoTracking().FirstOrDefaultAsync(p => p.ProductId == id);
+            var p = _uof.ProductRepository.GetById(p => p.ProductId == id);
 
             return null == p ? NotFound() : p;
         }
@@ -54,7 +57,7 @@ namespace APICatalog.Controllers
         [HttpGet("{id}/{param2:alpha:length(5)}", Name = "GetProduct7")]
         public ActionResult<Product> GetRouteExample_NOT_USED(int id, string param2)
         {
-            var p = _context.Products.AsNoTracking().FirstOrDefault(p => p.ProductId == id);
+            var p = _uof.ProductRepository.GetById(p => p.ProductId == id);
 
             return null == p ? NotFound() : p;
         }
@@ -62,13 +65,9 @@ namespace APICatalog.Controllers
         [HttpPost]
         public ActionResult Post([FromBody] Product p)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
-            _context.Products.Add(p);
-            _context.SaveChanges();
+            _uof.ProductRepository.Add(p);
+            _uof.Commit();
 
             return new CreatedAtRouteResult("GetProduct", new { id = p.ProductId }, p);
         }
@@ -76,18 +75,14 @@ namespace APICatalog.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Product p)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
             if (id != p.ProductId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(p).State = EntityState.Modified;
-            _context.SaveChanges();
+            _uof.ProductRepository.Update(p);
+            _uof.Commit();
 
             return Ok();
         }
@@ -95,15 +90,15 @@ namespace APICatalog.Controllers
         [HttpDelete("{id}")]
         public ActionResult<Product> Delete(int id)
         {
-            var p = _context.Products.FirstOrDefault(p => p.ProductId == id);
+            var p = _uof.ProductRepository.GetById(p => p.ProductId == id);
 
             if (null == p)
             {
                 return NotFound();
             }
 
-            _context.Products.Remove(p);
-            _context.SaveChanges();
+            _uof.ProductRepository.Delete(p);
+            _uof.Commit();
 
             return p;
         }

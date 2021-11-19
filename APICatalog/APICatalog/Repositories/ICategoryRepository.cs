@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace APICatalog.Repositories
 {
-    interface ICategoryRepository : IRepository<Category>
+    public interface ICategoryRepository : IRepository<Category>
     {
         IEnumerable<Category> GetCategoryWithProducts();
     }
