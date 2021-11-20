@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,10 +26,10 @@ namespace APICatalog.Pagination
             AddRange(items);
         }
 
-        public static PagedList<T> PagedListBuilder(IQueryable<T> source, int pageNumber, int pageSize)
+        public async static Task<PagedList<T>> PagedListBuilderAsync(IQueryable<T> source, int pageNumber, int pageSize)
         {
             var totalItems = source.Count();
-            var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
             return new PagedList<T>(items, totalItems, pageNumber, pageSize);
         }

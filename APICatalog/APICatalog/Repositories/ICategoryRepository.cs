@@ -1,13 +1,14 @@
 ﻿using APICatalog.Entities;
 using APICatalog.Pagination;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace APICatalog.Repositories
 {
     public interface ICategoryRepository : IRepository<Category>
     {
-        IEnumerable<Category> GetCategoryWithProducts();
+        Task<IEnumerable<Category>> GetCategoryWithProductsAsync();
 
-        PagedList<Category> GetCategories(PageParameters page);
+        Task<PagedList<Category>> GetCategoriesAsync(PageParameters page);
     }
 }

@@ -5,10 +5,11 @@ using APICatalog.Pagination;
 using APICatalog.Repositories.UnitOfWork;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace APICatalog.Controllers
 {
@@ -27,10 +28,10 @@ namespace APICatalog.Controllers
 
         [HttpGet]
         [ServiceFilter(typeof(ApiLoggingFilter))]
-        public ActionResult<IEnumerable<ProductDTO>> Get()
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> Get()
         {
             // waiting this operation but not blocking the thread
-            var products = _uof.ProductRepository.Get().ToList();
+            var products = await _uof.ProductRepository.Get().ToListAsync();
             var productsDTO = _mapper.Map<List<ProductDTO>>(products);
 
             return productsDTO;
@@ -38,10 +39,10 @@ namespace APICatalog.Controllers
 
         [HttpGet("pagination")]
         [ServiceFilter(typeof(ApiLoggingFilter))]
-        public ActionResult<IEnumerable<ProductDTO>> GetWithPagination([FromQuery] PageParameters p)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetWithPagination([FromQuery] PageParameters p)
         {
             // waiting this operation but not blocking the thread
-            var products = _uof.ProductRepository.GetProducts(p);
+            var products = await _uof.ProductRepository.GetProductsAsync(p);
 
             var metadata = new
             {
@@ -61,18 +62,18 @@ namespace APICatalog.Controllers
         }
 
         [HttpGet("by-price")]
-        public ActionResult<IEnumerable<ProductDTO>> GetOrderByPrice()
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetOrderByPrice()
         {
-            var products = _uof.ProductRepository.GetByPrice().ToList();
+            var products = await _uof.ProductRepository.GetByPriceAsync();
             var productsDTO = _mapper.Map<List<ProductDTO>>(products);
 
             return productsDTO;
         }
 
         [HttpGet("{id:int:min(1)}", Name = "GetProduct")]
-        public ActionResult<ProductDTO> Get(int id)
+        public async Task<ActionResult<ProductDTO>> Get(int id)
         {
-            var p = _uof.ProductRepository.GetById(p => p.ProductId == id);
+            var p = await _uof.ProductRepository.GetById(p => p.ProductId == id);
 
             return null == p ? NotFound() : _mapper.Map<ProductDTO>(p);
         }
@@ -91,19 +92,19 @@ namespace APICatalog.Controllers
         [HttpGet("{id}/{param2:alpha}", Name = "GetProduct6")]
         // Restricted alphanumeric with length 5 - param2
         [HttpGet("{id}/{param2:alpha:length(5)}", Name = "GetProduct7")]
-        public ActionResult<ProductDTO> GetRouteExample_NOT_USED(int id, string param2)
+        public async Task<ActionResult<ProductDTO>> GetRouteExample_NOT_USED(int id, string param2)
         {
-            var p = _uof.ProductRepository.GetById(p => p.ProductId == id);
+            var p = await _uof.ProductRepository.GetById(p => p.ProductId == id);
 
             return null == p ? NotFound() : _mapper.Map<ProductDTO>(p);
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] ProductDTO p)
+        public async Task<ActionResult> Post([FromBody] ProductDTO p)
         {
             var product = _mapper.Map<Product>(p);
             _uof.ProductRepository.Add(product);
-            _uof.Commit();
+            await _uof.Commit();
 
             var pSavedDTO = _mapper.Map<ProductDTO>(product);
 
@@ -111,7 +112,7 @@ namespace APICatalog.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] ProductDTO p)
+        public async Task<ActionResult> Put(int id, [FromBody] ProductDTO p)
         {
 
             if (id != p.ProductId)
@@ -122,15 +123,15 @@ namespace APICatalog.Controllers
             var product = _mapper.Map<Product>(p);
 
             _uof.ProductRepository.Update(product);
-            _uof.Commit();
+            await _uof.Commit();
 
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<ProductDTO> Delete(int id)
+        public async Task<ActionResult<ProductDTO>> Delete(int id)
         {
-            var p = _uof.ProductRepository.GetById(p => p.ProductId == id);
+            var p = await _uof.ProductRepository.GetById(p => p.ProductId == id);
 
             if (null == p)
             {
@@ -138,7 +139,7 @@ namespace APICatalog.Controllers
             }
 
             _uof.ProductRepository.Delete(p);
-            _uof.Commit();
+            await _uof.Commit();
 
             return _mapper.Map<ProductDTO>(p);
         }

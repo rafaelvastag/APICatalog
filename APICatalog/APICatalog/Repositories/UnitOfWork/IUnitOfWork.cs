@@ -1,4 +1,6 @@
-﻿namespace APICatalog.Repositories.UnitOfWork
+﻿using System.Threading.Tasks;
+
+namespace APICatalog.Repositories.UnitOfWork
 {
     public interface IUnitOfWork
     {
@@ -6,7 +8,7 @@
 
         ICategoryRepository CategoryRepository { get; }
 
-        void Commit();
+        Task Commit();
 
         void Dispose();
     }

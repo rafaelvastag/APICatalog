@@ -10,7 +10,7 @@ namespace APICatalog.Repositories
     {
         IQueryable<T> Get();
 
-        T GetById(Expression<Func<T, bool>> predicate);
+        Task<T> GetById(Expression<Func<T, bool>> predicate);
 
         void Add(T entity);
 

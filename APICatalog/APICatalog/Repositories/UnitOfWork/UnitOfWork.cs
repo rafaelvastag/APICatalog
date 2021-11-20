@@ -1,5 +1,6 @@
 ﻿using APICatalog.Context;
 using APICatalog.Repositories.Impl;
+using System.Threading.Tasks;
 
 namespace APICatalog.Repositories.UnitOfWork
 {
@@ -32,9 +33,9 @@ namespace APICatalog.Repositories.UnitOfWork
         }
 
 
-        public void Commit()
+        public async Task Commit()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

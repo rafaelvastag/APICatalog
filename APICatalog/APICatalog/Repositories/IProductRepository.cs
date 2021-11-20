@@ -9,8 +9,8 @@ namespace APICatalog.Repositories
 {
     public interface IProductRepository : IRepository<Product>
     {
-        IEnumerable<Product> GetByPrice();
+        Task<IEnumerable<Product>> GetByPriceAsync();
 
-        PagedList<Product> GetProducts(PageParameters page);
+        Task<PagedList<Product>> GetProductsAsync(PageParameters page);
     }
 }
