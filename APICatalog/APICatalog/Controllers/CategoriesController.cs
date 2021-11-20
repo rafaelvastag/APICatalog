@@ -1,5 +1,6 @@
 ﻿using APICatalog.DTOs;
 using APICatalog.Entities;
+using APICatalog.Pagination;
 using APICatalog.Repositories.UnitOfWork;
 using APICatalog.Services;
 using AutoMapper;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,6 +57,34 @@ namespace APICatalog.Controllers
                 var categories = _uof.CategoryRepository.Get().ToList();
 
                 return  _mapper.Map<List<CategoryDTO>>(categories);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error while trying get the categories");
+            }
+        }
+
+        [HttpGet("pagination")]
+        public ActionResult<IEnumerable<CategoryDTO>> GetWithPaginationData([FromQuery] PageParameters page)
+        {
+            try
+            {
+                var categories = _uof.CategoryRepository.GetCategories(page);
+
+                var metadata = new
+                {
+                    categories.TotalItems,
+                    categories.PageSize,
+                    categories.CurrentPage,
+                    categories.TotalPages,
+                    categories.HasNext,
+                    categories.HasPrevious
+                };
+
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+                return _mapper.Map<List<CategoryDTO>>(categories);
             }
             catch (Exception)
             {

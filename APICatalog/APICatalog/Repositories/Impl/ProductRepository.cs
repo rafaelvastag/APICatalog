@@ -1,5 +1,6 @@
 ﻿using APICatalog.Context;
 using APICatalog.Entities;
+using APICatalog.Pagination;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,11 @@ namespace APICatalog.Repositories.Impl
         public IEnumerable<Product> GetByPrice()
         {
             return Get().OrderBy(p => p.Price).ToList();
+        }
+
+        public PagedList<Product> GetProducts(PageParameters page)
+        {
+            return PagedList<Product>.PagedListBuilder(Get().OrderBy(p => p.ProductId), page.PageNumber, page.PageSize);
         }
     }
 }

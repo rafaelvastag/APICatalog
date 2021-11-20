@@ -1,7 +1,9 @@
 ﻿using APICatalog.Context;
 using APICatalog.Entities;
+using APICatalog.Pagination;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace APICatalog.Repositories.Impl
 {
@@ -9,6 +11,11 @@ namespace APICatalog.Repositories.Impl
     {
         public CategoryRepository(CatalogDbContext context) : base(context)
         {
+        }
+
+        public PagedList<Category> GetCategories(PageParameters page)
+        {
+            return PagedList<Category>.PagedListBuilder(Get().OrderBy(p => p.CategoryId), page.PageNumber, page.PageSize);
         }
 
         public IEnumerable<Category> GetCategoryWithProducts()
