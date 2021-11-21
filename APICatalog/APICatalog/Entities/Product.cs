@@ -22,13 +22,14 @@ namespace APICatalog.Entities
         public string Name { get; set; }
 
         [Required]
-        [StringLength(10, ErrorMessage = "The description must not have more than {1} characters")]
+        [StringLength(500, ErrorMessage = "The description must not have more than {1} characters")]
         [Column("DESCRIPTION")]
         public string Description { get; set; }
 
         [Required]
         [Range(1, 10000, ErrorMessage = "The price must be between {1} and {2}")]
-        [Column("PRICE")]
+        [Column(name: "PRICE", TypeName = "decimal(8,2)")]
+        [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
         [Required]

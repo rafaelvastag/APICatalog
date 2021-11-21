@@ -7,13 +7,17 @@ using APICatalog.Repositories.UnitOfWork;
 using APICatalog.Services;
 using APICatalog.Services.Impl;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace APICatalog
 {
@@ -41,10 +45,27 @@ namespace APICatalog
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddDbContext<CatalogDbContext>(options => {
+            services.AddDbContext<CatalogDbContext>(options =>
+            {
                 string con = Configuration.GetConnectionString("APICatalogConnection");
                 options.UseMySql(con, ServerVersion.AutoDetect(con));
             });
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<CatalogDbContext>()
+                .AddDefaultTokenProviders();
+
+            // Security config
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
+                options => options.TokenValidationParameters = new TokenValidationParameters { 
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidateLifetime = true,
+                    ValidAudience = Configuration["TokenConfig:Audience"],
+                    ValidIssuer = Configuration["TokenConfig:Issuer"],
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Secret"]))
+                });
 
             services.AddScoped<ApiLoggingFilter>();
 
@@ -74,6 +95,8 @@ namespace APICatalog
             app.ConfigureExceptionHandler();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
