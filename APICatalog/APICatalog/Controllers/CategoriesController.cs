@@ -5,6 +5,7 @@ using APICatalog.Repositories.UnitOfWork;
 using APICatalog.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ using System.Threading.Tasks;
 namespace APICatalog.Controllers
 {
     [Authorize(AuthenticationSchemes = "Bearer")]
+    [EnableCors("ControllersWithCorsAllowed")]
     [Route("api/[Controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase

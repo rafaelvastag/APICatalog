@@ -5,6 +5,7 @@ using APICatalog.Pagination;
 using APICatalog.Repositories.UnitOfWork;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 namespace APICatalog.Controllers
 {
     [Authorize(AuthenticationSchemes = "Bearer")]
+    [EnableCors("ControllersWithCorsAllowed")]
     [Route("api/[Controller]")]
     [ApiController]
     public class ProductsController : ControllerBase

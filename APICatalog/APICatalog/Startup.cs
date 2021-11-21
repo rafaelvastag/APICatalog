@@ -33,7 +33,14 @@ namespace APICatalog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("ControllersWithCorsAllowed",
+                    builder => builder
+                                .AllowAnyHeader()
+                                .AllowAnyMethod()
+                                .AllowAnyOrigin());
+            });
 
             var mappingConfig = new MapperConfiguration(mc =>
             {
@@ -58,7 +65,8 @@ namespace APICatalog
 
             // Security config
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
-                options => options.TokenValidationParameters = new TokenValidationParameters { 
+                options => options.TokenValidationParameters = new TokenValidationParameters
+                {
                     ValidateAudience = true,
                     ValidateIssuer = true,
                     ValidateLifetime = true,
@@ -97,15 +105,11 @@ namespace APICatalog
 
             app.UseRouting();
 
+            app.UseCors();
+
             app.UseAuthentication();
 
             app.UseAuthorization();
-
-            app.UseCors(options => 
-            options
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {
