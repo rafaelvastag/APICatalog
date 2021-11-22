@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace APICatalog.Controllers
 {
-    [ApiVersion("2.0")]
+    [ApiVersion("3.0")]
     [Route("api/v{v:apiVersion}/version")]
     [ApiController]
     public class VersioningV2Controller : ControllerBase
@@ -14,7 +14,7 @@ namespace APICatalog.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Content("<html><body><h2> VersioningV2Controller - V 2.0 </h2></body></html>", "text/html");
+            return Content("<html><body><h2> VersioningV2Controller - V 3.0 </h2></body></html>", "text/html");
         }
     }
 }
