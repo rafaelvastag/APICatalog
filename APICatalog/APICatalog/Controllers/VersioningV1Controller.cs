@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace APICatalog.Controllers
 {
     [ApiVersion("1.0")]
-    [Route("api/version")]
+    [Route("api/{v:apiVersion}/version")]
     [ApiController]
     public class VersioningV1Controller : ControllerBase
     {
