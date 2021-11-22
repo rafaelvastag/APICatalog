@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>APICatalog</name>
+    </assembly>
+    <members>
+        <member name="M:APICatalog.Controllers.AuthenticationController.RegisterUser(APICatalog.DTOs.UserDTO)">
+            <summary>
+            Register a new user
+            </summary>
+            <param name="_user">Object of type UserDTO</param>
+            <returns>Status 200 and TOKEN when success</returns>
+        </member>
+        <member name="M:APICatalog.Controllers.AuthenticationController.Login(APICatalog.DTOs.UserDTO)">
+            <summary>
+            Validation for user credentials
+            </summary>
+            <param name="_user">Object of type UserDTO</param>
+            <returns>Status 200 and TOKEN when success</returns>
+            <remarks>return token and status 200</remarks>
+        </member>
+        <member name="M:APICatalog.Controllers.ProductsController.Get(System.Int32)">
+            <summary>
+            Get Category by ID
+            </summary>
+            <param name="id"></param>
+            <returns>Item found by ID or NULL</returns>
+        </member>
+    </members>
+</doc>

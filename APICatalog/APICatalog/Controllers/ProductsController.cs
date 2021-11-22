@@ -6,6 +6,7 @@ using APICatalog.Repositories.UnitOfWork;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace APICatalog.Controllers
 {
+    [Produces("application/json")]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [EnableCors("ControllersWithCorsAllowed")]
     [Route("api/[Controller]")]
@@ -74,7 +76,14 @@ namespace APICatalog.Controllers
             return productsDTO;
         }
 
+        /// <summary>
+        /// Get Category by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Item found by ID or NULL</returns>
         [HttpGet("{id:int:min(1)}", Name = "GetProduct")]
+        [ProducesResponseType(typeof(ProductDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductDTO>> Get(int id)
         {
             var p = await _uof.ProductRepository.GetById(p => p.ProductId == id);
@@ -116,6 +125,7 @@ namespace APICatalog.Controllers
         }
 
         [HttpPut("{id}")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
         public async Task<ActionResult> Put(int id, [FromBody] ProductDTO p)
         {
 

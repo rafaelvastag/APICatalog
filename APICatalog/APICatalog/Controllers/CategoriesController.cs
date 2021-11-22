@@ -19,6 +19,8 @@ using System.Threading.Tasks;
 
 namespace APICatalog.Controllers
 {
+    [ApiConventionType(typeof(DefaultApiConventions))]
+    [Produces("application/json")]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [EnableCors("ControllersWithCorsAllowed")]
     [Route("api/[Controller]")]

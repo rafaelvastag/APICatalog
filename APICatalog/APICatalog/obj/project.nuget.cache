@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "LbINkEmfnO4dkLSqYXc6wXXM+wmgtWCw3DStyY+Wgo64leHDwun0ArpJejMbC9pPcajzbk7FsCi8+E/r6YLjIQ==",
+  "dgSpecHash": "6b86yTQFvaSpcWZ63ssoe4cv9LG2nteC/jWAqyh9tt0KSOCHnA+a8UuImv0zcJCadDQMhAoi1+53E5GkIwq4Qw==",
   "success": true,
   "projectFilePath": "C:\\Users\\rgvas\\Desktop\\CoreEssentials\\CoreEssentialMonolith\\APICatalog\\APICatalog\\APICatalog.csproj",
   "expectedPackageFiles": [
@@ -23,6 +23,7 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
     "C:\\Users\\rgvas\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\5.0.1\\microsoft.aspnetcore.identity.entityframeworkcore.5.0.1.nupkg.sha512",
     "C:\\Users\\rgvas\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\5.0.12\\microsoft.aspnetcore.jsonpatch.5.0.12.nupkg.sha512",
+    "C:\\Users\\rgvas\\.nuget\\packages\\microsoft.aspnetcore.mvc.api.analyzers\\2.2.6\\microsoft.aspnetcore.mvc.api.analyzers.2.2.6.nupkg.sha512",
     "C:\\Users\\rgvas\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\5.0.12\\microsoft.aspnetcore.mvc.newtonsoftjson.5.0.12.nupkg.sha512",
     "C:\\Users\\rgvas\\.nuget\\packages\\microsoft.aspnetcore.mvc.versioning\\5.0.0\\microsoft.aspnetcore.mvc.versioning.5.0.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.aspnetcore.webutilities\\2.2.0\\microsoft.aspnetcore.webutilities.2.2.0.nupkg.sha512",

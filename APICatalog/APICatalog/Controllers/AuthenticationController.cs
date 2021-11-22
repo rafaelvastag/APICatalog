@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace APICatalog.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
@@ -37,6 +38,11 @@ namespace APICatalog.Controllers
             return "Authorization Controller :: Accessed in " + DateTime.Now.ToLongDateString();
         }
 
+        /// <summary>
+        /// Register a new user
+        /// </summary>
+        /// <param name="_user">Object of type UserDTO</param>
+        /// <returns>Status 200 and TOKEN when success</returns>
         [HttpPost("register")]
         public async Task<ActionResult> RegisterUser([FromBody] UserDTO _user)
         {
@@ -59,6 +65,12 @@ namespace APICatalog.Controllers
             return Ok(GetToken(_user));
         }
 
+        /// <summary>
+        /// Validation for user credentials
+        /// </summary>
+        /// <param name="_user">Object of type UserDTO</param>
+        /// <returns>Status 200 and TOKEN when success</returns>
+        /// <remarks>return token and status 200</remarks>
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] UserDTO _user)
         {
