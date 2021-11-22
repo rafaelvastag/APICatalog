@@ -48,3 +48,6 @@ C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalo
 C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.Versioning.dll
+C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\obj\Debug\net5.0\APICatalog.csproj.AssemblyReference.cache
+C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\obj\Debug\net5.0\APICatalog.MvcApplicationPartsAssemblyInfo.cs

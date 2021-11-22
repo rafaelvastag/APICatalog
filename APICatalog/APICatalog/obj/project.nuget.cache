@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "jQCFIWRUTxwoZJ6gbDteZ7vipAyvCaFZGTVz9CiQj8207AZn3pM8nyahdH6Ls2vzIapzGcD7TjpmAyxY79jY7A==",
+  "dgSpecHash": "e2lr49LROXy4sNerkF18pDA6MvqeopH1ZQmPpkW5p7h6ClWUPa+E8F8KycqUdxeri3qpbsEeriFngLlytaSoFw==",
   "success": true,
   "projectFilePath": "C:\\Users\\rgvas\\Desktop\\CoreEssentials\\CoreEssentialMonolith\\APICatalog\\APICatalog\\APICatalog.csproj",
   "expectedPackageFiles": [
@@ -24,6 +24,7 @@
     "C:\\Users\\rgvas\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\5.0.1\\microsoft.aspnetcore.identity.entityframeworkcore.5.0.1.nupkg.sha512",
     "C:\\Users\\rgvas\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\5.0.12\\microsoft.aspnetcore.jsonpatch.5.0.12.nupkg.sha512",
     "C:\\Users\\rgvas\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\5.0.12\\microsoft.aspnetcore.mvc.newtonsoftjson.5.0.12.nupkg.sha512",
+    "C:\\Users\\rgvas\\.nuget\\packages\\microsoft.aspnetcore.mvc.versioning\\5.0.0\\microsoft.aspnetcore.mvc.versioning.5.0.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.aspnetcore.webutilities\\2.2.0\\microsoft.aspnetcore.webutilities.2.2.0.nupkg.sha512",
     "C:\\Users\\rgvas\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\rgvas\\.nuget\\packages\\microsoft.entityframeworkcore\\5.0.12\\microsoft.entityframeworkcore.5.0.12.nupkg.sha512",

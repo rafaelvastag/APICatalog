@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -79,6 +80,13 @@ namespace APICatalog
             services.AddScoped<ApiLoggingFilter>();
 
             services.AddTransient<IFromService, FromService>();
+
+            services.AddApiVersioning(options =>
+            {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ReportApiVersions = true;
+            });
 
             services.AddControllers();
             services.AddControllers().AddNewtonsoftJson(options =>
