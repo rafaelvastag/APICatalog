@@ -50,3 +50,8 @@ C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalo
 C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.Versioning.dll
 C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\obj\Debug\net5.0\APICatalog.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\bin\Debug\net5.0\Microsoft.OpenApi.dll
+C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\rgvas\Desktop\CoreEssentials\CoreEssentialMonolith\APICatalog\APICatalog\obj\Debug\net5.0\APICatalog.csproj.AssemblyReference.cache

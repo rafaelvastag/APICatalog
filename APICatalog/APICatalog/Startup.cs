@@ -19,6 +19,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System;
 using System.Text;
 
 namespace APICatalog
@@ -78,6 +80,23 @@ namespace APICatalog
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Secret"]))
                 });
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Version = "V1",
+                    Title = "APICatalog",
+                    Description = "API for products and categories catalog",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Rafael Vastag",
+                        Email = "rvastag@gmail.com",
+                        Url = new Uri("https://github.com/rafaelvastag")
+                    }
+                }); ;
+            }
+            );
+
             services.AddScoped<ApiLoggingFilter>();
 
             services.AddTransient<IFromService, FromService>();
@@ -115,11 +134,15 @@ namespace APICatalog
 
             app.UseRouting();
 
-            app.UseCors();
-
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseCors();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Product and Category Catalog"); });
 
             app.UseEndpoints(endpoints =>
             {
